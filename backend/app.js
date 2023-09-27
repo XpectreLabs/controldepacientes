@@ -99,7 +99,7 @@ router.post('/createPatient', async (req,res, next) => {
 
 router.post('/editPatient', async (req,res, next) => {
   const id = parseInt(req.body.patient_id);
-  const r = await prisma.patients.update({
+  await prisma.patients.update({
     where: {
       patient_id : parseInt(id),
     },
@@ -111,8 +111,6 @@ router.post('/editPatient', async (req,res, next) => {
       ssn      : req.body.ssn,
     }
   });
-
-  console.log(id+""+req.body.firstName);
   res.json({"status":"success"});
 });
 
@@ -174,6 +172,37 @@ router.post('/dataUser', async (req,res,next) => {
     });
     res.json({dataUser});
   }
+});
+
+
+router.post('/editUser', async (req,res, next) => {
+  const id = parseInt(req.body.user_id);
+    await prisma.users.update({
+    where: {
+      user_id : parseInt(id),
+    },
+    data:{
+      username: req.body.user,
+      firstname: req.body.firstName,
+      lastname: req.body.lastName,
+      email: req.body.email
+    }
+  });
+  res.json({"status":"success"});
+});
+
+
+router.post('/changePassword', async (req,res, next) => {
+  const id = parseInt(req.body.user_id);
+    await prisma.users.update({
+    where: {
+      user_id : parseInt(id),
+    },
+    data:{
+      password: req.body.password,
+    }
+  });
+  res.json({"status":"success"});
 });
 
 // Servidor HTTP
